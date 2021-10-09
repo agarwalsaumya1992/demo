@@ -26,8 +26,8 @@ public class CustomerServiceImpl implements CustomerService{
 	//Contacts repository layer to add customer
 		public String createCustomer(CustomerDTO customerDTO)
 		{
-			boolean response=customerRepository.createCustomer(customerDTO);
-			 if(!response) {
+			int response=customerRepository.createCustomer(customerDTO);
+			 if(response!=1) {
 				 return "Some issue occured";
 			 }
 			 return environment.getProperty(InfyConstants.CUSTOMER_CREATE_SUCCESS.toString());
@@ -42,8 +42,8 @@ public class CustomerServiceImpl implements CustomerService{
 		//Contacts repository layer to delete customer
 		public String deleteCustomer(long phoneNumber)throws NoSuchCustomerException
 		{
-			boolean response = customerRepository.deleteCustomer(phoneNumber);
-			if(!response)
+			int response = customerRepository.deleteCustomer(phoneNumber);
+			if(response!=1)
 				throw new NoSuchCustomerException(environment.getProperty(InfyConstants.CUSTOMER_NOT_FOUND.toString()));
 			return environment.getProperty(InfyConstants.CUSTOMER_DELETE_SUCCESS.toString());
 			
@@ -51,8 +51,8 @@ public class CustomerServiceImpl implements CustomerService{
 		//Contacts repository layer to update customer
 		public String updateCustomer(long phoneNumber, CustomerDTO customerDTO) throws NoSuchCustomerException
 		{
-			boolean response = customerRepository.updateCustomer(phoneNumber,customerDTO);
-			if(!response)
+			int response = customerRepository.updateCustomer(phoneNumber,customerDTO);
+			if(response!=1)
 				throw new NoSuchCustomerException(environment.getProperty(InfyConstants.CUSTOMER_NOT_FOUND.toString()));
 			return environment.getProperty(InfyConstants.CUSTOMER_UPDATE_SUCCESS.toString());
 		}

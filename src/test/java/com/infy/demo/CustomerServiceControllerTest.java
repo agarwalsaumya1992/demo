@@ -21,7 +21,7 @@ import com.infy.dto.CustomerDTO;
 	      super.setUp();
 	   }
 	   @Test
-	   public void getProductsList() throws Exception {
+	   public void getCustomerList() throws Exception {
 	      String uri = "/customers";
 	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 	         .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
@@ -33,11 +33,13 @@ import com.infy.dto.CustomerDTO;
 	      assertTrue(productlist.length > 0);
 	   }
 	   @Test
-	   public void createProduct() throws Exception {
+	   public void createCustomer() throws Exception {
 	      String uri = "/customers";
 	      CustomerDTO dto = new CustomerDTO();
 	      dto.setPhoneNo(987654321);
 	      dto.setName("Ginger");
+	      dto.setAddress("Chandigarh");
+	      dto.setEmail("gig@xyz.com");
 	      
 	      String inputJson = super.mapToJson(dto);
 	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
