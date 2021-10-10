@@ -20,14 +20,9 @@ app.controller('CustomerController', ['$scope','CustomerService', function ($sco
 		
         CustomerService.getCustomers()
           .then(function success(response){
-				console.log(response);
-              $scope.customerList = response.data.customerList;
-              console.log(response.data.customerList);
-              $scope.message='';
-              $scope.errorMessage = '';
+              $scope.customerList = response.data.list;
           },
           function error (response ){
-          		console.log(response.data);
               $scope.message='';
               $scope.errorMessage = response.data.message;
           });
@@ -59,13 +54,12 @@ app.controller('CustomerController', ['$scope','CustomerService', function ($sco
           .then(function success(response){
               $scope.message = response.data.message;
               $scope.errorMessage = '';
-              console.log(response.data);
               $scope.reset();
           },
           function error(response){
               $scope.errorMessage = response.data.message;
               $scope.message = '';
-              console.log(response.data);
+
           });
     }
     
@@ -76,15 +70,13 @@ app.controller('CustomerController', ['$scope','CustomerService', function ($sco
         CustomerService.deleteCustomer(id)
           .then (function success(response){
               $scope.message = response.data.message;
-              $scope.user = null;
               $scope.errorMessage='';
-              console.log(response.data);
               $scope.reset();
           },
           function error(response){
               $scope.errorMessage = response.data.message;
               $scope.message='';
-              console.log(response.data);
+              
           })
     }
     

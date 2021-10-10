@@ -15,8 +15,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import com.infy.dto.CustomerDTO;
 
 //@Transactional annotation can also be placed at class level, which will make all its methods execute in a transaction scope.
-
-@Transactional
+//timeout transaction in 10 seconds
+@Transactional(timeout = 60)
 @Repository("customerRepository")
 public class CustomerRepositoryImpl implements CustomerRepository {
 	
@@ -28,9 +28,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 	
 	
 	 //named parameters :name
-	//timeout transaction in 10 seconds
 	@Override
-	@Transactional(timeout = 10)
 	public int createCustomer(CustomerDTO customer) {
 		
 		String query = "INSERT INTO TBL_CUSTOMER(phoneNo,name,email,address) Values (:phoneNo,:name,:email,:address)";

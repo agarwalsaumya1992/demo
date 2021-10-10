@@ -45,13 +45,7 @@ public class CustomerDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public CustomerDTO(long id,String phoneNo, String name, String email, String address) {
-		this.id=id;
-		this.phoneNo = phoneNo;
-		this.name = name;
-		this.email = email;
-		this.address = address;
-	}
+
 	public CustomerDTO() {
 	}
 	@Override
