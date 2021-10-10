@@ -11,7 +11,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.infy.dto.ResponseBuilder;
-import com.infy.util.InfyConstants;
  
 @RestControllerAdvice
 public class ExceptionControllerAdvice {

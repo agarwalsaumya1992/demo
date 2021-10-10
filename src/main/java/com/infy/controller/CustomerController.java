@@ -1,6 +1,6 @@
 package com.infy.controller;
 
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import com.infy.dto.CustomerDTO;
-import com.infy.dto.CustomerResponseBuilder;
+
 import com.infy.dto.ResponseBuilder;
 import com.infy.exceptions.NoSuchCustomerException;
 import com.infy.service.CustomerService;
@@ -35,15 +35,18 @@ public class CustomerController {
 	// injecting the customerService reference
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired 
+	private ResponseBuilder response;
 
 	// Fetching customer details
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ResponseBuilder> fetchCustomer() {
 
-		CustomerResponseBuilder response = new CustomerResponseBuilder();
+		
 		response.setResponseCode(HttpStatus.OK.value());
 		response.setMessage("fetched successfully");
-		response.setCustomerList(customerService.fetchCustomer());
+		 response.setList(customerService.fetchCustomer());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -51,7 +54,7 @@ public class CustomerController {
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<ResponseBuilder> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) throws Exception {
 		
-		ResponseBuilder response = new ResponseBuilder();
+	
 		response.setResponseCode(HttpStatus.OK.value());
 		response.setMessage(customerService.createCustomer(customerDTO));
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -66,7 +69,7 @@ public class CustomerController {
 			throws NoSuchCustomerException {
 		
 		
-		ResponseBuilder response = new ResponseBuilder();
+		
 		response.setResponseCode(HttpStatus.OK.value());
 		response.setMessage(customerService.updateCustomer(id, customerDTO));
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -77,7 +80,7 @@ public class CustomerController {
 	public ResponseEntity<ResponseBuilder> deleteCustomer(@PathVariable("id") long id) throws NoSuchCustomerException {
 		
 		
-		ResponseBuilder response = new ResponseBuilder();
+		
 		response.setResponseCode(HttpStatus.OK.value());
 		response.setMessage(customerService.deleteCustomer(id));
 		return new ResponseEntity<>(response, HttpStatus.OK);
