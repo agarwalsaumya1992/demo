@@ -2,8 +2,8 @@ package com.infy.exceptions;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -15,8 +15,8 @@ import com.infy.dto.ResponseBuilder;
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
     //this helps receiving the message/value related to the general exception from the ValidationMessages.properties
-	@Autowired
-	private Environment environment;
+//	@Autowired
+//	private Environment environment;
 	
 	//Handler for exceptions other than NoSuchCustomerException and validation exceptions
  	@ExceptionHandler(Exception.class)
@@ -27,7 +27,7 @@ public class ExceptionControllerAdvice {
 	     error.setResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 //	     error.setMessage(environment.getProperty(InfyConstants.GENERAL_EXCEPTION_MESSAGE.toString()));
 	     error.setMessage(ex.getMessage());
-	     return new ResponseEntity<>(error, HttpStatus.OK);
+	     return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	//Handler for NoSuchCustomerException
@@ -45,11 +45,11 @@ public class ExceptionControllerAdvice {
 	public ResponseEntity<ResponseBuilder> handleValidationExceptions(MethodArgumentNotValidException ex) 
 	{
 		ResponseBuilder error = new ResponseBuilder();
-	     error.setResponseCode(HttpStatus.BAD_REQUEST.value());
+	     error.setResponseCode(HttpStatus.NOT_FOUND.value());
 	     error.setMessage(ex.getBindingResult().getAllErrors()
 	    		 		  	.stream().map(ObjectError::getDefaultMessage)//lambda equivalent -> x->x.getDefaultMessage()
 	    		 		  	.collect(Collectors.joining(", ")));
-	        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 	}
 		
 	//Handler that handles the exception raised because of invalid data that is received as 

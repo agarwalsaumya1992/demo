@@ -3,11 +3,9 @@ package com.infy.dto;
 
 import java.util.List;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
+
+
 public class ResponseBuilder {
 	private int responseCode;
 	private String message;

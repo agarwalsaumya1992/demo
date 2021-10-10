@@ -19,7 +19,7 @@
 <h2 class="text-center">My Contacts</h2>
 <hr>
 	<div ng-controller="CustomerController">
-		<table class="table-light table-borderless">
+		<table style="margin:auto;" class="table-light table-borderless">
 			<tr>
 				<td scope="row">Phone No:</td>
 				<td><input type="text" id="id" ng-model="customer.phoneNo" /></td>
@@ -37,8 +37,9 @@
 				<td><input type="text" id="address" ng-model="customer.address" /></td>
 			</tr>
 			<tr>
-				<td><button class="btn btn-light" ng-click="reset()">Reset</button></td>
-				<td>
+				
+				<td colspan="2">
+				<button class="btn btn-dark" ng-click="reset()">Reset</button>
 					<div ng-switch="buttontype">
 						<button class="btn btn-dark" ng-switch-when="create" ng-click="createCustomer()">Add</button>
 						<button class="btn btn-dark" ng-switch-when="update" ng-click="updateCustomer()">Update</button>

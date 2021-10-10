@@ -36,14 +36,14 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 	
-	@Autowired 
-	private ResponseBuilder response;
+	
+	
 
 	// Fetching customer details
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ResponseBuilder> fetchCustomer() {
 
-		
+		ResponseBuilder response= new ResponseBuilder();
 		response.setResponseCode(HttpStatus.OK.value());
 		response.setMessage("fetched successfully");
 		 response.setList(customerService.fetchCustomer());
@@ -54,7 +54,7 @@ public class CustomerController {
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<ResponseBuilder> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) throws Exception {
 		
-	
+		ResponseBuilder response= new ResponseBuilder();
 		response.setResponseCode(HttpStatus.OK.value());
 		response.setMessage(customerService.createCustomer(customerDTO));
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -69,7 +69,7 @@ public class CustomerController {
 			throws NoSuchCustomerException {
 		
 		
-		
+		ResponseBuilder response= new ResponseBuilder();
 		response.setResponseCode(HttpStatus.OK.value());
 		response.setMessage(customerService.updateCustomer(id, customerDTO));
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -80,7 +80,7 @@ public class CustomerController {
 	public ResponseEntity<ResponseBuilder> deleteCustomer(@PathVariable("id") long id) throws NoSuchCustomerException {
 		
 		
-		
+		ResponseBuilder response= new ResponseBuilder();
 		response.setResponseCode(HttpStatus.OK.value());
 		response.setMessage(customerService.deleteCustomer(id));
 		return new ResponseEntity<>(response, HttpStatus.OK);
