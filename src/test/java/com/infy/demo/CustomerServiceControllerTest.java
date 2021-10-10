@@ -11,6 +11,8 @@ package com.infy.demo;
 	import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.infy.dto.CustomerDTO;
+import com.infy.dto.CustomerResponseBuilder;
+import com.infy.dto.ResponseBuilder;
 
 	
 
@@ -29,14 +31,14 @@ import com.infy.dto.CustomerDTO;
 	      int status = mvcResult.getResponse().getStatus();
 	      assertEquals(200, status);
 	      String content = mvcResult.getResponse().getContentAsString();
-	      CustomerDTO[] productlist = super.mapFromJson(content, CustomerDTO[].class);
-	      assertTrue(productlist.length > 0);
+	      CustomerResponseBuilder response = super.mapFromJson(content, CustomerResponseBuilder.class);
+	      assertEquals(200,response.getResponseCode());
 	   }
 	   @Test
 	   public void createCustomer() throws Exception {
 	      String uri = "/customers";
 	      CustomerDTO dto = new CustomerDTO();
-	      dto.setPhoneNo(987654321);
+	      dto.setPhoneNo("9876543210");
 	      dto.setName("Ginger");
 	      dto.setAddress("Chandigarh");
 	      dto.setEmail("gig@xyz.com");
@@ -49,6 +51,7 @@ import com.infy.dto.CustomerDTO;
 	      int status = mvcResult.getResponse().getStatus();
 	      assertEquals(200, status);
 	      String content = mvcResult.getResponse().getContentAsString();
-	      assertEquals(content, "Customer details got added successfully");
+	      ResponseBuilder response = super.mapFromJson(content, ResponseBuilder.class);
+	      assertEquals(response.getMessage(), "Customer details got added successfully");
 	   }
 	}

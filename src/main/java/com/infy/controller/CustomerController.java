@@ -2,8 +2,8 @@ package com.infy.controller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
 import com.infy.dto.CustomerDTO;
-
+import com.infy.dto.CustomerResponseBuilder;
+import com.infy.dto.ResponseBuilder;
 import com.infy.exceptions.NoSuchCustomerException;
 import com.infy.service.CustomerService;
+
 
 @RestController
 @RequestMapping("/customers")
@@ -37,29 +38,49 @@ public class CustomerController {
 
 	// Fetching customer details
 	@GetMapping(produces = "application/json")
-	public List<CustomerDTO> fetchCustomer() {
+	public ResponseEntity<ResponseBuilder> fetchCustomer() {
 
-		return customerService.fetchCustomer();
+		CustomerResponseBuilder response = new CustomerResponseBuilder();
+		response.setResponseCode(HttpStatus.OK.value());
+		response.setMessage("fetched successfully");
+		response.setCustomerList(customerService.fetchCustomer());
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	// Adding a customer
 	@PostMapping(consumes = "application/json")
-	public ResponseEntity<String> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
-		return ResponseEntity.ok(customerService.createCustomer(customerDTO));
+	public ResponseEntity<ResponseBuilder> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) throws Exception {
+		
+		ResponseBuilder response = new ResponseBuilder();
+		response.setResponseCode(HttpStatus.OK.value());
+		response.setMessage(customerService.createCustomer(customerDTO));
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	 
+		
+		
 	}
 
 	// Updating an existing customer
-	@PutMapping(value = "/{phoneNumber}", consumes = "application/json")
-	public String updateCustomer(@PathVariable("phoneNumber") long phoneNumber, @RequestBody CustomerDTO customerDTO)
+	@PutMapping(value = "/{id}", consumes = "application/json")
+	public ResponseEntity<ResponseBuilder> updateCustomer(@PathVariable("id") long id, @RequestBody CustomerDTO customerDTO)
 			throws NoSuchCustomerException {
-		return customerService.updateCustomer(phoneNumber, customerDTO);
+		
+		
+		ResponseBuilder response = new ResponseBuilder();
+		response.setResponseCode(HttpStatus.OK.value());
+		response.setMessage(customerService.updateCustomer(id, customerDTO));
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	// Deleting a customer
-	@DeleteMapping("/{phoneNumber}")
-	public String deleteCustomer(@PathVariable("phoneNumber") @Pattern(regexp = "[0-9]{10}",message="{customer.phoneNo.invalid}")  String phoneNumber)
-			throws NoSuchCustomerException {
-		return customerService.deleteCustomer(Long.parseLong(phoneNumber));
+	@DeleteMapping("/{id}")
+	public ResponseEntity<ResponseBuilder> deleteCustomer(@PathVariable("id") long id) throws NoSuchCustomerException {
+		
+		
+		ResponseBuilder response = new ResponseBuilder();
+		response.setResponseCode(HttpStatus.OK.value());
+		response.setMessage(customerService.deleteCustomer(id));
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	// request

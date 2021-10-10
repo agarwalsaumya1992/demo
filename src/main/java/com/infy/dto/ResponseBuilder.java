@@ -1,5 +1,5 @@
 package com.infy.dto;
-public class ResponseMessage {
+public class ResponseBuilder {
 	private int responseCode;
 	private String message;
 	public int getResponseCode() {

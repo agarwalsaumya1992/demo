@@ -10,6 +10,6 @@ public interface CustomerRepository {
 	
     public int createCustomer(CustomerDTO dto);
     
-    public int deleteCustomer(Long phoneNo);
-    public int updateCustomer(long phoneNumber, CustomerDTO customerDTO);
+    public int deleteCustomer(long id);
+    public int updateCustomer(long id, CustomerDTO customerDTO);
 }

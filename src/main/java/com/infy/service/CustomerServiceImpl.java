@@ -5,6 +5,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import com.infy.dto.CustomerDTO;
+import com.infy.dto.ResponseBuilder;
 import com.infy.exceptions.NoSuchCustomerException;
 import com.infy.repository.CustomerRepository;
 import com.infy.util.InfyConstants;
@@ -24,12 +25,13 @@ public class CustomerServiceImpl implements CustomerService{
 	private Environment environment;
 
 	//Contacts repository layer to add customer
-		public String createCustomer(CustomerDTO customerDTO)
+		public String createCustomer(CustomerDTO customerDTO) throws Exception
 		{
+			log.info("Customer list is being added: "+customerDTO.toString());
 			int response=customerRepository.createCustomer(customerDTO);
-			 if(response!=1) {
-				 return "Some issue occured";
-			 }
+			log.info("Customer added response: "+response); 
+			 if(response!=1) 
+				 throw new Exception(environment.getProperty(InfyConstants.GENERAL_EXCEPTION_MESSAGE.toString()));
 			 return environment.getProperty(InfyConstants.CUSTOMER_CREATE_SUCCESS.toString());
 		}
 		//makes a call to repository method for returning a list of customers
@@ -37,21 +39,26 @@ public class CustomerServiceImpl implements CustomerService{
 		{
 			log.info("Customer list is being fetched");
 			List<CustomerDTO> customers = customerRepository.fetchCustomer();
+			log.info("Customer list: "+customers.toString());
 			return customers;
 		}
 		//Contacts repository layer to delete customer
-		public String deleteCustomer(long phoneNumber)throws NoSuchCustomerException
+		public String deleteCustomer(long id)throws NoSuchCustomerException
 		{
-			int response = customerRepository.deleteCustomer(phoneNumber);
+			log.info("Customer list is being deleted: "+id);
+			int response = customerRepository.deleteCustomer(id);
+			log.info("Customer deleted response: "+response);
 			if(response!=1)
 				throw new NoSuchCustomerException(environment.getProperty(InfyConstants.CUSTOMER_NOT_FOUND.toString()));
 			return environment.getProperty(InfyConstants.CUSTOMER_DELETE_SUCCESS.toString());
 			
 		}
 		//Contacts repository layer to update customer
-		public String updateCustomer(long phoneNumber, CustomerDTO customerDTO) throws NoSuchCustomerException
+		public String updateCustomer(long id, CustomerDTO customerDTO) throws NoSuchCustomerException
 		{
-			int response = customerRepository.updateCustomer(phoneNumber,customerDTO);
+			log.info("Customer list is being updated: "+id + customerDTO.toString());
+			int response = customerRepository.updateCustomer(id,customerDTO);
+			log.info("Customer updated response: "+response);
 			if(response!=1)
 				throw new NoSuchCustomerException(environment.getProperty(InfyConstants.CUSTOMER_NOT_FOUND.toString()));
 			return environment.getProperty(InfyConstants.CUSTOMER_UPDATE_SUCCESS.toString());

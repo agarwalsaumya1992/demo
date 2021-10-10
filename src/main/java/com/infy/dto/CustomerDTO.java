@@ -3,19 +3,28 @@ package com.infy.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class CustomerDTO {
+	long id;
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	@NotNull(message="{customer.phone.must}")
-	long phoneNo;
+	@Size(min = 10, max = 10, message ="{customer.phoneNo.invalid}")
+	String phoneNo;
 	@NotBlank(message="{customer.name.must}")
 	String name;
 	@Email(message= "{customer.email.invalid}")
 	String email;
 	String address;
-	public long getPhoneNo() {
+	public String getPhoneNo() {
 		return phoneNo;
 	}
-	public void setPhoneNo(long phoneNo) {
+	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
 	public String getName() {
@@ -36,7 +45,8 @@ public class CustomerDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public CustomerDTO(long phoneNo, String name, String email, String address) {
+	public CustomerDTO(long id,String phoneNo, String name, String email, String address) {
+		this.id=id;
 		this.phoneNo = phoneNo;
 		this.name = name;
 		this.email = email;
@@ -44,4 +54,12 @@ public class CustomerDTO {
 	}
 	public CustomerDTO() {
 	}
+	@Override
+	public String toString() {
+		String obj="[id: "+this.id+", name: "+this.name+", phoneNo: "+this.phoneNo+", email: "+this.email+", address: "+this.address+"]";
+		return obj;
+	}
+	
+	
+	
 }
