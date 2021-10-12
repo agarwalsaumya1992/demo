@@ -2,7 +2,7 @@
 <html ng-app="app">
 <head>
 <meta charset="ISO-8859-1">
-<title>Contacts</title>
+<title>Inventory</title>
 <!-- CSS only -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -16,42 +16,44 @@
 </head>
 <body class="container">
 
-	<h2 class="text-center">My Contacts</h2>
+	<h2 class="text-center">My Inventory</h2>
 	<hr>
-	<div ng-controller="CustomerController">
+	<div ng-controller="MyController">
 		<table style="margin: auto;" class="table-light table-borderless">
 			<tr>
-				<td scope="row">Phone No:</td>
-				<td><input type="text" id="id" ng-model="customer.phoneNo" /></td>
+				<td scope="row">Category:</td>
+				<td><input type="text"  ng-model="product.category" /></td>
 			</tr>
 			<tr>
 				<td scope="row">Name:</td>
-				<td><input type="text" id="name" ng-model="customer.name" /></td>
+				<td><input type="text"  ng-model="product.name" /></td>
 			</tr>
 			<tr>
-				<td scope="row">Email:</td>
-				<td><input type="text" id="email" ng-model="customer.email" /></td>
+				<td scope="row">Price:</td>
+				<td><input type="number" ng-model="product.price" /></td>
 			</tr>
 			<tr>
-				<td scope="row">Address:</td>
-				<td><input type="text" id="address" ng-model="customer.address" /></td>
+				<td scope="row">Quantity:</td>
+				<td><input type="number"  ng-model="product.quantity" /></td>
 
 			</tr>
 			<tr>
 				<td scope="row">Photo:</td>
-				<td><img ng-if="buttontype == 'update'" style="max-height: 100px;max-width: 100px;" ng-src="/customers/file?file={{customer.photo}}" />
-				<input type = "file" file-model = "myFile"/>
-				</td>
+				<td><img ng-if="buttontype == 'update'"
+					style="max-height: 100px; max-width: 100px;"
+					ng-src="/products/file?file={{product.photo}}" /> <input
+					type="file" file-model="myFile" /></td>
 			</tr>
 			<tr>
 
-				<td class="btn-group" colspan="2">
+				<td style="padding: 10px; margin-left: 60%;" class="btn-group"
+					colspan="2">
 					<button class="btn btn-dark" ng-click="reset()">Reset</button>
 					<div ng-switch="buttontype">
 						<button class="btn btn-dark" ng-switch-when="create"
-							ng-click="createCustomer()">Add</button>
+							ng-click="createRecord()">Add</button>
 						<button class="btn btn-dark" ng-switch-when="update"
-							ng-click="updateCustomer()">Update</button>
+							ng-click="updateRecord()">Update</button>
 					</div>
 				</td>
 
@@ -70,32 +72,31 @@
 			<thead class="table-dark">
 				<tr>
 					<th scope="col">#</th>
-					<th scope="col">photo</th>
-					<th scope="col">phone</th>
-					<th scope="col">name</th>
-					<th scope="col">email</th>
-					<th scope="col">address</th>
+					<th scope="col">Photo</th>
+					<th scope="col">Category</th>
+					<th scope="col">Name</th>
+					<th scope="col">Price</th>
+					<th scope="col">Quantity</th>
 					<th scope="col"></th>
 					<th scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="c in customerList">
-					<td scope="row">{{c.id}}</td>
-					<td>
-					<img style="max-height: 100px;max-width: 100px;" ng-src="/customers/file?file={{c.photo}}" />
-					</td>
-					<td>{{c.phoneNo}}</td>
-					<td>{{c.name}}</td>
-					<td>{{c.email}}</td>
-					<td>{{c.address}}</td>
-					<td>
-						<button class="btn btn-outline-dark btn-sm"
-							ng-click="pickCustomer(c)">EDIT</button>
-					</td>
+				<tr ng-repeat="p in productList">
+					<td scope="row">{{p.id}}</td>
+					<td><img style="max-height: 100px; max-width: 100px;"
+						ng-src="/products/file?file={{p.photo}}" /></td>
+					<td>{{p.category}}</td>
+					<td>{{p.name}}</td>
+					<td>{{p.price}}</td>
+					<td>{{p.quantity}}</td>
 					<td>
 						<button class="btn btn-outline-dark btn-sm"
-							ng-click="deleteCustomer(c.id)">DELETE</button>
+							ng-click="pickRecord(p)">EDIT</button>
+					</td>
+					<td>
+						<button class="btn btn-outline-dark btn-sm"
+							ng-click="deleteRecord(p.id)">DELETE</button>
 					</td>
 
 				</tr>

@@ -9,23 +9,23 @@ package com.infy.demo;
 	import org.springframework.test.web.servlet.MvcResult;
 	import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.infy.dto.CustomerDTO;
+import com.infy.dto.ProductDTO;
 import com.infy.dto.ResponseBuilder;
 
 	
 
 	public class TestCustomerController extends TestDemoApplication {
 		
-		CustomerDTO dto1 = new CustomerDTO();
+		ProductDTO dto1 = new ProductDTO();
 
 	   @Override
 	   @Before
 	   public void setUp() {
 	      super.setUp();
-	      dto1.setPhoneNo("9876543210");
-	      dto1.setName("Saumya");
-	      dto1.setAddress("Chandigarh");
-	      dto1.setEmail("sam@xyz.com");
+	      dto1.setCategory("women");
+	      dto1.setName("shirt");
+	      dto1.setQuantity(5);
+	      dto1.setPrice(350.00);
 
 	   }
 	   @Test

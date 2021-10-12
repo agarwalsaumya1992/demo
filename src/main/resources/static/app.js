@@ -1,29 +1,29 @@
 var app = angular.module('app', []);
 
-app.controller('CustomerController', ['$scope', 'CustomerService', function($scope, CustomerService) {
+app.controller('MyController', ['$scope', 'MyService', function($scope, MyService) {
 
 
 	$scope.reset = function() {
-		$scope.customer = null;
+		$scope.product = null;
 		$scope.buttontype = "create";
-		$scope.getCustomers();
+		$scope.getRecords();
 		
     
 	};
 
-	$scope.pickCustomer = function(c) {
+	$scope.pickRecord = function(c) {
 
 		$scope.buttontype = "update";
 		var temp = JSON.parse(JSON.stringify(c));
-		$scope.customer = temp;
+		$scope.product = temp;
 		
 	};
 
-	$scope.getCustomers = function() {
+	$scope.getRecords = function() {
 
-		CustomerService.getCustomers()
+		MyService.getRecords()
 			.then(function success(response) {
-				$scope.customerList = response.data.list;
+				$scope.productList = response.data.list;
 			},
 				function error(response) {
 					$scope.message = '';
@@ -34,30 +34,27 @@ app.controller('CustomerController', ['$scope', 'CustomerService', function($sco
 
 	$scope.reset();
 
-	$scope.createCustomer = function() {
+	$scope.createRecord = function() {
 
-		var customer = JSON.stringify($scope.customer);
+		var product = JSON.stringify($scope.product);
 
-		CustomerService.createCustomer($scope.myFile,customer)
+		MyService.createRecord($scope.myFile,product)
 			.then(function success(response) {
-				console.log(response.data);
 				$scope.message = response.data.message;
 				$scope.errorMessage = '';
 				$scope.reset();
 			},
 				function error(response) {
-					console.log(response.data);
 					$scope.errorMessage = response.data.message;
 					$scope.message = '';
 				});
 	};
 
-	$scope.updateCustomer = function() {
-		console.log($scope.myFile);
+	$scope.updateRecord = function() {
+	
 		if ($scope.myFile!=null)
 		{
-		console.log($scope.myFile);
-		CustomerService.updateFile($scope.customer.photo, $scope.myFile)
+		MyService.updateFile($scope.product.photo, $scope.myFile)
 		.then(function success(response) {
 				$scope.message = response.data.message;
 				$scope.errorMessage = '';
@@ -68,7 +65,8 @@ app.controller('CustomerController', ['$scope', 'CustomerService', function($sco
 
 			});
 		}
-		CustomerService.updateCustomer($scope.customer.id, $scope.customer)
+		
+		MyService.updateRecord($scope.product)
 			.then(function success(response) {
 				$scope.message = $scope.message +" , "+ response.data.message;
 				$scope.reset();
@@ -82,8 +80,8 @@ app.controller('CustomerController', ['$scope', 'CustomerService', function($sco
 
 
 
-	$scope.deleteCustomer = function(id) {
-		CustomerService.deleteCustomer(id)
+	$scope.deleteRecord = function(id) {
+		MyService.deleteRecord(id)
 			.then(function success(response) {
 				$scope.message = response.data.message;
 				$scope.errorMessage = '';
@@ -116,25 +114,25 @@ app.directive('fileModel', ['$parse', function($parse) {
 }]);
 
 
-app.service('CustomerService', ['$http', function($http) {
+app.service('MyService', ['$http', function($http) {
 
 
-	this.getCustomers = function getCustomers() {
+	this.getRecords = function getRecords() {
 		return $http({
 			method: 'GET',
-			url: 'customers'
+			url: 'products'
 		});
 	}
 
-	this.createCustomer = function createCustomer(file,customer) {
+	this.createRecord = function createRecord(file,product) {
 
 		var fd = new FormData();
 		fd.append('file', file);
-		fd.append('customer', customer);
+		fd.append('product', product);
 
 		return $http({
 			method: 'POST',
-			url: 'customers',
+			url: 'products',
 			data: fd,
 			headers: { 'Content-Type': undefined },
 			transformRequest: angular.identity
@@ -142,18 +140,18 @@ app.service('CustomerService', ['$http', function($http) {
 		
 	}
 
-	this.deleteCustomer = function deleteCustomer(id) {
+	this.deleteRecord = function deleteRecord(id) {
 		return $http({
 			method: 'DELETE',
-			url: 'customers/' + id
+			url: 'products/' + id
 		});
 	}
 
-	this.updateCustomer = function updateCustomer(id, customer) {
+	this.updateRecord = function updateRecord(product) {
 		return $http({
 			method: 'PUT',
-			url: 'customers/' + id,
-			data: customer
+			url: 'products',
+			data: product
 		});
 	}
 	
@@ -165,7 +163,7 @@ app.service('CustomerService', ['$http', function($http) {
 
 		return $http({
 			method: 'POST',
-			url: 'customers/file',
+			url: 'products/file',
 			data: fd,
 			headers: { 'Content-Type': undefined },
 			transformRequest: angular.identity
