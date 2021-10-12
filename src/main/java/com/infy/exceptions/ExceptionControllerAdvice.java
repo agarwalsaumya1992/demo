@@ -18,7 +18,7 @@ public class ExceptionControllerAdvice {
 //	@Autowired
 //	private Environment environment;
 	
-	//Handler for exceptions other than NoSuchCustomerException and validation exceptions
+
  	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseBuilder> handleGeneralExceptions(Exception ex) 
  	{
@@ -31,8 +31,8 @@ public class ExceptionControllerAdvice {
 	}
 	
 	//Handler for NoSuchCustomerException
-	@ExceptionHandler(NoSuchCustomerException.class)
-	public ResponseEntity<ResponseBuilder> handleCustomerExceptions(NoSuchCustomerException ex) 
+	@ExceptionHandler(NoSuchRecordException.class)
+	public ResponseEntity<ResponseBuilder> handleCustomerExceptions(NoSuchRecordException ex) 
 	{
 		ResponseBuilder error = new ResponseBuilder();
 	     error.setResponseCode(HttpStatus.BAD_REQUEST.value());
@@ -45,11 +45,11 @@ public class ExceptionControllerAdvice {
 	public ResponseEntity<ResponseBuilder> handleValidationExceptions(MethodArgumentNotValidException ex) 
 	{
 		ResponseBuilder error = new ResponseBuilder();
-	     error.setResponseCode(HttpStatus.NOT_FOUND.value());
+	     error.setResponseCode(HttpStatus.BAD_REQUEST.value());
 	     error.setMessage(ex.getBindingResult().getAllErrors()
 	    		 		  	.stream().map(ObjectError::getDefaultMessage)//lambda equivalent -> x->x.getDefaultMessage()
 	    		 		  	.collect(Collectors.joining(", ")));
-	        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+	        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 		
 	//Handler that handles the exception raised because of invalid data that is received as 

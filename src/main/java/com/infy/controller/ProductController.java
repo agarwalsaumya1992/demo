@@ -27,71 +27,78 @@ import org.springframework.web.multipart.MultipartFile;
 //import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infy.dto.CustomerDTO;
+import com.infy.dto.ProductDTO;
 
 import com.infy.dto.ResponseBuilder;
-import com.infy.exceptions.NoSuchCustomerException;
-import com.infy.service.CustomerService;
+import com.infy.exceptions.NoSuchRecordException;
+import com.infy.service.ProductService;
 import com.infy.service.FileService;
 
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/products")
 @Validated
-public class CustomerController {
+public class ProductController {
 
-	// CustomerController needs to contact CustomerService, hence dependency
+	
 	// injecting the customerService reference
 	@Autowired
-	private CustomerService customerService;
+	private ProductService productService;
 	
 	@Autowired
 	private FileService fileService;
 
 	
 //	private static Logger log = LoggerFactory.getLogger(CustomerController.class);
-	// Fetching customer details
+	
 	@GetMapping(produces = "application/json")
-	public ResponseEntity<ResponseBuilder> fetchCustomer() {
+	public ResponseEntity<ResponseBuilder> fetchProduct() {
 
 		ResponseBuilder response = new ResponseBuilder();
 		response.setResponseCode(HttpStatus.OK.value());
 		response.setMessage("fetched successfully");
-		response.setList(customerService.fetchCustomer());
+		response.setList(productService.fetchProduct());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	// Adding a customer
-//	@PostMapping(consumes = "application/json")
-//	public ResponseEntity<ResponseBuilder> createCustomer(@Valid @RequestBody CustomerDTO customerDTO)
-//			throws Exception {
-//
-//		ResponseBuilder response = new ResponseBuilder();
-//		response.setResponseCode(HttpStatus.OK.value());
-//		response.setMessage(customerService.createCustomer(customerDTO));
-//		return new ResponseEntity<>(response, HttpStatus.OK);
-//
-//	}
-
-	// Updating an existing customer
-	@PutMapping(value = "/{id}", consumes = "application/json")
-	public ResponseEntity<ResponseBuilder> updateCustomer(@PathVariable("id") long id,
-			@RequestBody CustomerDTO customerDTO) throws NoSuchCustomerException {
+//update
+	@PutMapping(consumes = "application/json")
+	public ResponseEntity<ResponseBuilder> updateProduct(@RequestBody ProductDTO customerDTO) throws NoSuchRecordException {
 
 		ResponseBuilder response = new ResponseBuilder();
 		response.setResponseCode(HttpStatus.OK.value());
-		response.setMessage(customerService.updateCustomer(id, customerDTO));
+		response.setMessage(productService.updateProduct(customerDTO));
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	// Deleting a customer
+	// Deleting 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<ResponseBuilder> deleteCustomer(@PathVariable("id") long id) throws NoSuchCustomerException {
+	public ResponseEntity<ResponseBuilder> deleteProduct(@PathVariable("id") long id) throws NoSuchRecordException {
 
 		ResponseBuilder response = new ResponseBuilder();
 		response.setResponseCode(HttpStatus.OK.value());
-		response.setMessage(customerService.deleteCustomer(id));
+		response.setMessage(productService.deleteProduct(id));
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<ResponseBuilder> createProduct(@RequestParam("product") String customer, @RequestParam(value = "file", required = false) MultipartFile file)
+			throws Exception {
+
+		ObjectMapper mapper = new ObjectMapper();
+		ProductDTO dto = mapper.readValue(customer, ProductDTO.class);
+		
+		String filename =UUID.randomUUID().toString();
+		dto.setPhoto(filename);
+		
+		if(file!=null)
+		fileService.saveFile(filename, file);
+	         
+	     ResponseBuilder response = new ResponseBuilder();
+			response.setResponseCode(HttpStatus.OK.value());
+			response.setMessage(productService.createProduct(dto));
+			return new ResponseEntity<>(response, HttpStatus.OK);
+
 	}
 
 	// query params 
@@ -104,24 +111,7 @@ public class CustomerController {
 		
 
 	}
-	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<ResponseBuilder> createCustomer(@RequestParam("customer") String customer, @RequestParam(value = "file", required = false) MultipartFile file)
-			throws Exception {
-
-		ObjectMapper mapper = new ObjectMapper();
-		CustomerDTO dto = mapper.readValue(customer, CustomerDTO.class);
-		
-		String filename =UUID.randomUUID().toString();
-		dto.setPhoto(filename);
-		
-		fileService.saveFile(filename, file);
-	         
-	     ResponseBuilder response = new ResponseBuilder();
-			response.setResponseCode(HttpStatus.OK.value());
-			response.setMessage(customerService.createCustomer(dto));
-			return new ResponseEntity<>(response, HttpStatus.OK);
-
-	}
+	
 	
 	@PostMapping(value = "file" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<ResponseBuilder> saveFile(@RequestParam("filename") String filename, @RequestParam(value = "file", required = false) MultipartFile file)
@@ -132,7 +122,7 @@ public class CustomerController {
 	         
 	     ResponseBuilder response = new ResponseBuilder();
 			response.setResponseCode(HttpStatus.OK.value());
-			response.setMessage("uploaded sucessfully");
+			response.setMessage("File uploaded sucessfully");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}
