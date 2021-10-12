@@ -16,10 +16,10 @@
 </head>
 <body class="container">
 
-<h2 class="text-center">My Contacts</h2>
-<hr>
+	<h2 class="text-center">My Contacts</h2>
+	<hr>
 	<div ng-controller="CustomerController">
-		<table style="margin:auto;" class="table-light table-borderless">
+		<table style="margin: auto;" class="table-light table-borderless">
 			<tr>
 				<td scope="row">Phone No:</td>
 				<td><input type="text" id="id" ng-model="customer.phoneNo" /></td>
@@ -35,22 +35,30 @@
 			<tr>
 				<td scope="row">Address:</td>
 				<td><input type="text" id="address" ng-model="customer.address" /></td>
+
 			</tr>
 			<tr>
-				
-				<td colspan="2">
-				<button class="btn btn-dark" ng-click="reset()">Reset</button>
+				<td scope="row">Photo:</td>
+				<td>{{customer.photo}}<input type = "file" file-model = "myFile"/>
+				</td>
+			</tr>
+			<tr>
+
+				<td class="btn-group" colspan="2">
+					<button class="btn btn-dark" ng-click="reset()">Reset</button>
 					<div ng-switch="buttontype">
-						<button class="btn btn-dark" ng-switch-when="create" ng-click="createCustomer()">Add</button>
-						<button class="btn btn-dark" ng-switch-when="update" ng-click="updateCustomer()">Update</button>
+						<button class="btn btn-dark" ng-switch-when="create"
+							ng-click="createCustomer()">Add</button>
+						<button class="btn btn-dark" ng-switch-when="update"
+							ng-click="updateCustomer()">Update</button>
 					</div>
 				</td>
 
 
 			</tr>
 			<td colspan="2">
-			<p class="text-success" >{{message}}</p>
-		<p class="text-danger" >{{errorMessage}}</p>
+				<p class="text-success">{{message}}</p>
+				<p class="text-danger">{{errorMessage}}</p>
 			</td>
 			<tr>
 			</tr>
@@ -61,6 +69,7 @@
 			<thead class="table-dark">
 				<tr>
 					<th scope="col">#</th>
+					<th scope="col">photo</th>
 					<th scope="col">phone</th>
 					<th scope="col">name</th>
 					<th scope="col">email</th>
@@ -72,15 +81,20 @@
 			<tbody>
 				<tr ng-repeat="c in customerList">
 					<td scope="row">{{c.id}}</td>
+					<td>
+					<img style="max-height: 100px;max-width: 100px;" ng-src="/customers/file?file={{c.photo}}" />
+					</td>
 					<td>{{c.phoneNo}}</td>
 					<td>{{c.name}}</td>
 					<td>{{c.email}}</td>
 					<td>{{c.address}}</td>
 					<td>
-						<button class="btn btn-outline-dark btn-sm" ng-click="pickCustomer(c)">EDIT</button>
+						<button class="btn btn-outline-dark btn-sm"
+							ng-click="pickCustomer(c)">EDIT</button>
 					</td>
 					<td>
-						<button class="btn btn-outline-dark btn-sm" ng-click="deleteCustomer(c.id)">DELETE</button>
+						<button class="btn btn-outline-dark btn-sm"
+							ng-click="deleteCustomer(c.id)">DELETE</button>
 					</td>
 
 				</tr>

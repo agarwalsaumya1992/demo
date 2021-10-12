@@ -31,13 +31,14 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 	@Override
 	public int createCustomer(CustomerDTO customer) {
 		
-		String query = "INSERT INTO TBL_CUSTOMER(phoneNo,name,email,address) Values (:phoneNo,:name,:email,:address)";
+		String query = "INSERT INTO TBL_CUSTOMER(phoneNo,name,email,address,photo) Values (:phoneNo,:name,:email,:address,:photo)";
 		
 		
 		SqlParameterSource namedParam = new MapSqlParameterSource("phoneNo", customer.getPhoneNo())
 				.addValue("name", customer.getName())
 				.addValue("email", customer.getEmail())
-				.addValue("address", customer.getAddress());
+				.addValue("address", customer.getAddress())
+				.addValue("photo", customer.getPhoto());
 				
 		return namedParameterJdbcTemplate.update(query, namedParam);
 		
@@ -53,7 +54,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 	@Override
 	@Transactional(readOnly = true) 
 	public List<CustomerDTO> fetchCustomer() {
-		String sql = "select id, phoneNo, name ,email, address from TBL_CUSTOMER";
+		String sql = "select id, phoneNo, name ,email, address ,photo from TBL_CUSTOMER";
 		List<CustomerDTO> list= jdbctemplate.query(sql, new RowMapper<CustomerDTO>() {
 			public CustomerDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				CustomerDTO cust = new CustomerDTO();
@@ -62,6 +63,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 				cust.setName(rs.getString("name"));
 				cust.setEmail(rs.getString("email"));
 				cust.setAddress(rs.getString("address"));
+				cust.setPhoto(rs.getString("photo"));
 				
 				return cust;
 			}

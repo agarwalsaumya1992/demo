@@ -11,7 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.infy.dto.ResponseBuilder;
- 
+
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
     //this helps receiving the message/value related to the general exception from the ValidationMessages.properties

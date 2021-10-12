@@ -21,6 +21,9 @@ public class CustomerDTO {
 	@Email(message= "{customer.email.invalid}")
 	String email;
 	String address;
+	
+    private String photo;
+	
 	public String getPhoneNo() {
 		return phoneNo;
 	}
@@ -50,8 +53,14 @@ public class CustomerDTO {
 	}
 	@Override
 	public String toString() {
-		String obj="[id: "+this.id+", name: "+this.name+", phoneNo: "+this.phoneNo+", email: "+this.email+", address: "+this.address+"]";
+		String obj="[id: "+this.id+", name: "+this.name+", phoneNo: "+this.phoneNo+", email: "+this.email+", address: "+this.address+", photo: "+this.photo+"]";
 		return obj;
+	}
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 	
 	
