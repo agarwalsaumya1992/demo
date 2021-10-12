@@ -22,7 +22,9 @@
 		<table style="margin: auto;" class="table-light table-borderless">
 			<tr>
 				<td scope="row">Category:</td>
-				<td><input type="text"  ng-model="product.category" /></td>
+				<td>
+				<select ng-model="product.category" ng-options="x for x in categories">
+</select>
 			</tr>
 			<tr>
 				<td scope="row">Name:</td>

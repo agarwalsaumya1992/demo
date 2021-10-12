@@ -1,5 +1,6 @@
 package com.infy.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 //
@@ -33,6 +34,7 @@ import com.infy.dto.ResponseBuilder;
 import com.infy.exceptions.NoSuchRecordException;
 import com.infy.service.ProductService;
 import com.infy.service.FileService;
+import com.infy.util.Categories;
 
 
 @RestController
@@ -49,7 +51,7 @@ public class ProductController {
 	private FileService fileService;
 
 	
-//	private static Logger log = LoggerFactory.getLogger(CustomerController.class);
+
 	
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ResponseBuilder> fetchProduct() {
@@ -125,6 +127,16 @@ public class ProductController {
 			response.setMessage("File uploaded sucessfully");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 
+	}
+	
+	@GetMapping(value = "categories", produces = "application/json")
+	public ResponseEntity<ResponseBuilder> fetchCategories() {
+
+		ResponseBuilder response = new ResponseBuilder();
+		response.setResponseCode(HttpStatus.OK.value());
+		response.setMessage("fetched successfully");
+		response.setList(Categories.getCategories());
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }

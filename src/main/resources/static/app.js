@@ -30,10 +30,23 @@ app.controller('MyController', ['$scope', 'MyService', function($scope, MyServic
 					$scope.errorMessage = response.data.message;
 				});
 	};
+	
+	$scope.getCategories = function() {
 
+		MyService.getCategories()
+			.then(function success(response) {
+				$scope.categories = response.data.list;
+			},
+				function error(response) {
+				console.log(response);
+				});
+	};
 
+	$scope.getCategories();
 	$scope.reset();
-
+	
+	
+	
 	$scope.createRecord = function() {
 
 		var product = JSON.stringify($scope.product);
@@ -121,6 +134,13 @@ app.service('MyService', ['$http', function($http) {
 		return $http({
 			method: 'GET',
 			url: 'products'
+		});
+	}
+	
+	this.getCategories = function getCategories() {
+		return $http({
+			method: 'GET',
+			url: 'products/categories'
 		});
 	}
 
