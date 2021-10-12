@@ -20,7 +20,7 @@ import com.infy.DemoApplication;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DemoApplication.class)
 @WebAppConfiguration
-public abstract class DemoApplicationTests {
+public abstract class TestDemoApplication {
    protected MockMvc mvc;
    @Autowired
    WebApplicationContext webApplicationContext;

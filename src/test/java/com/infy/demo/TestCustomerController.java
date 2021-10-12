@@ -14,7 +14,7 @@ import com.infy.dto.ResponseBuilder;
 
 	
 
-	public class TestCustomerController extends DemoApplicationTests {
+	public class TestCustomerController extends TestDemoApplication {
 		
 		CustomerDTO dto1 = new CustomerDTO();
 
