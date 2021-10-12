@@ -8,7 +8,8 @@ import com.infy.dto.FileDTO;
 
 public interface FileRepository {
 
-	public  byte[] getFile(String fileName) throws IOException;
-	public int saveFile(String fileName, byte[] filedata) throws IOException;
+	public  byte[] getFile(String fileName);
+	public int saveFile(String fileName, byte[] filedata);
+	public int isFileExist(String filename);
 	
 }
