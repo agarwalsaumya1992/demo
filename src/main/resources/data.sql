@@ -15,6 +15,8 @@ VALUES ( '8888222212','saumya','myemail@in.com','667 lko','photo.jpg');
 
 select * from TBL_CUSTOMER;
 
+DROP TABLE TBL_FILE;
+
 create table TBL_FILE(
 filename VARCHAR(64),
 filedata bytea

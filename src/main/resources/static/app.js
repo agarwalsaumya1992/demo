@@ -6,8 +6,9 @@ app.controller('CustomerController', ['$scope', 'CustomerService', function($sco
 	$scope.reset = function() {
 		$scope.customer = null;
 		$scope.buttontype = "create";
-		$scope.myFile = null;
 		$scope.getCustomers();
+		
+    
 	};
 
 	$scope.pickCustomer = function(c) {
@@ -69,11 +70,11 @@ app.controller('CustomerController', ['$scope', 'CustomerService', function($sco
 		}
 		CustomerService.updateCustomer($scope.customer.id, $scope.customer)
 			.then(function success(response) {
-				$scope.message = $scope.message +" "+ response.data.message;
+				$scope.message = $scope.message +" , "+ response.data.message;
 				$scope.reset();
 			},
 			function error(response) {
-					$scope.errorMessage =$scope.errorMessage +" "+ response.data.message;
+					$scope.errorMessage =$scope.errorMessage +" , "+ response.data.message;
 
 			});
 	};

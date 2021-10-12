@@ -114,6 +114,7 @@ public class CustomerController {
 		String filename =UUID.randomUUID().toString();
 		dto.setPhoto(filename);
 		
+		if(file!=null)
 		fileService.saveFile(filename, file);
 	         
 	     ResponseBuilder response = new ResponseBuilder();
@@ -132,7 +133,7 @@ public class CustomerController {
 	         
 	     ResponseBuilder response = new ResponseBuilder();
 			response.setResponseCode(HttpStatus.OK.value());
-			response.setMessage("uploaded sucessfully");
+			response.setMessage("File uploaded sucessfully");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}

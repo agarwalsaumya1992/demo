@@ -70,5 +70,14 @@ public class FileRepositoryImpl implements FileRepository {
 		return count;
 	}
 	
+	@Override
+	public int deleteFile(String filename) {
+		
+		MapSqlParameterSource in = new MapSqlParameterSource();
+		in.addValue("filename", filename);
+		return namedParameterJdbcTemplate.update("delete from TBL_FILE where filename = :filename ",
+				in);
+	}
+	
 	
 }

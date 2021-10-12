@@ -39,7 +39,8 @@
 			</tr>
 			<tr>
 				<td scope="row">Photo:</td>
-				<td>{{customer.photo}}<input type = "file" file-model = "myFile"/>
+				<td><img ng-if="buttontype == 'update'" style="max-height: 100px;max-width: 100px;" ng-src="/customers/file?file={{customer.photo}}" />
+				<input type = "file" file-model = "myFile"/>
 				</td>
 			</tr>
 			<tr>
