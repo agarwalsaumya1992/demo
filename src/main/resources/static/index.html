@@ -41,10 +41,17 @@
 			</tr>
 			<tr>
 				<td scope="row">Photo:</td>
-				<td><img ng-if="buttontype == 'update'"
+				<td>
+				<div ng-if="buttontype == 'update'">
+				<img 
 					style="max-height: 100px; max-width: 100px;"
-					ng-src="/products/file?file={{product.photo}}" /> <input
-					type="file" file-model="myFile" /></td>
+					ng-src="/products/file?file={{product.photo}}" />
+					<button style="float: left;" class="btn btn-dark" ng-click="deleteFile()">X</button>
+				</div>
+				
+				 <input type="file" file-model="myFile" />
+				</td>
+					
 			</tr>
 			<tr>
 
