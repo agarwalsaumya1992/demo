@@ -65,29 +65,21 @@ app.controller('MyController', ['$scope', 'MyService', function($scope, MyServic
 
 	$scope.updateRecord = function() {
 	
-		if ($scope.myFile!=null)
-		{
-		MyService.updateFile($scope.product.photo, $scope.myFile)
-		.then(function success(response) {
+		
+		var product = angular.toJson($scope.product);
+		console.log(product);
+		MyService.updateRecord($scope.myFile,product)
+			.then(function success(response) {
 				$scope.message = response.data.message;
 				$scope.errorMessage = '';
-			},
-			function error(response) {
-					$scope.errorMessage = response.data.message;
-					$scope.message = '';
-
-			});
-		}
-		
-		MyService.updateRecord($scope.product)
-			.then(function success(response) {
-				$scope.message = $scope.message +" , "+ response.data.message;
 				$scope.reset();
 			},
-			function error(response) {
-					$scope.errorMessage =$scope.errorMessage +" , "+ response.data.message;
+				function error(response) {
+					$scope.errorMessage = response.data.message;
+					$scope.message = '';
+				});
+	
 
-			});
 	};
 
 
@@ -99,6 +91,19 @@ app.controller('MyController', ['$scope', 'MyService', function($scope, MyServic
 				$scope.message = response.data.message;
 				$scope.errorMessage = '';
 				$scope.reset();
+			},
+				function error(response) {
+					$scope.errorMessage = response.data.message;
+					$scope.message = '';
+
+				});
+	};
+	
+	$scope.deleteFile = function() {
+		MyService.deleteFile($scope.product.photo)
+			.then(function success(response) {
+				$scope.message = response.data.message;
+				$scope.errorMessage = '';
 			},
 				function error(response) {
 					$scope.errorMessage = response.data.message;
@@ -166,30 +171,29 @@ app.service('MyService', ['$http', function($http) {
 			url: 'products/' + id
 		});
 	}
+	
+	this.deleteFile = function deleteFile(filename) {
+		return $http({
+			method: 'DELETE',
+			url: 'products/file/' + filename
+		});
+	}
 
-	this.updateRecord = function updateRecord(product) {
+	this.updateRecord = function updateRecord(file,product) {
+		var fd = new FormData();
+		fd.append('file', file);
+		fd.append('product', product);
+
 		return $http({
 			method: 'PUT',
 			url: 'products',
-			data: product
-		});
-	}
-	
-	this.updateFile = function updateFile(filename,file) {
-
-		var fd = new FormData();
-		fd.append('file', file);
-		fd.append('filename', filename);
-
-		return $http({
-			method: 'POST',
-			url: 'products/file',
 			data: fd,
 			headers: { 'Content-Type': undefined },
 			transformRequest: angular.identity
 		});
-		
 	}
+	
+
 
 }]);
 

@@ -2,6 +2,9 @@ package com.infy.exceptions;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.infy.dto.ResponseBuilder;
+import com.infy.service.ProductServiceImpl;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
@@ -18,11 +22,12 @@ public class ExceptionControllerAdvice {
 //	@Autowired
 //	private Environment environment;
 	
+	private static Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
  	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseBuilder> handleGeneralExceptions(Exception ex) 
  	{
- 		
+ 		log.error(ex.getMessage());
  		ResponseBuilder error = new ResponseBuilder();
 	     error.setResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 //	     error.setMessage(environment.getProperty(InfyConstants.GENERAL_EXCEPTION_MESSAGE.toString()));
@@ -34,6 +39,7 @@ public class ExceptionControllerAdvice {
 	@ExceptionHandler(NoSuchRecordException.class)
 	public ResponseEntity<ResponseBuilder> handleCustomerExceptions(NoSuchRecordException ex) 
 	{
+		log.error(ex.getMessage());
 		ResponseBuilder error = new ResponseBuilder();
 	     error.setResponseCode(HttpStatus.BAD_REQUEST.value());
 	     error.setMessage(ex.getMessage());
@@ -44,6 +50,7 @@ public class ExceptionControllerAdvice {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ResponseBuilder> handleValidationExceptions(MethodArgumentNotValidException ex) 
 	{
+		log.error(ex.getMessage());
 		ResponseBuilder error = new ResponseBuilder();
 	     error.setResponseCode(HttpStatus.BAD_REQUEST.value());
 	     error.setMessage(ex.getBindingResult().getAllErrors()
@@ -57,6 +64,7 @@ public class ExceptionControllerAdvice {
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<ResponseBuilder> handleConstraintValidationExceptions(ConstraintViolationException ex) 
 	{
+		log.error(ex.getMessage());
 		ResponseBuilder error = new ResponseBuilder();
 	     error.setResponseCode(HttpStatus.BAD_REQUEST.value());
 	     error.setMessage(ex.getConstraintViolations()

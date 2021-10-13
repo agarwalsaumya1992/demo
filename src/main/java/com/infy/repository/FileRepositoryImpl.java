@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -17,11 +19,14 @@ import org.springframework.stereotype.Repository;
 
 import com.infy.dto.FileDTO;
 
+
 @Repository("fileRepository")
 public class FileRepositoryImpl implements FileRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	
+	private static Logger log = LoggerFactory.getLogger(FileRepository.class);
 	
 	@Override
 	public int saveFile(String fileName, byte[] filedata){
@@ -29,15 +34,7 @@ public class FileRepositoryImpl implements FileRepository {
 		MapSqlParameterSource in = new MapSqlParameterSource();
 		in.addValue("filename", fileName);
 		in.addValue("filedata",new SqlLobValue(new ByteArrayInputStream(filedata),filedata.length,new DefaultLobHandler()),Types.BLOB);
-
-		String query;
-		if (isFileExist(fileName)>0) {
-			 query = "update TBL_FILE set filedata = :filedata   where filename = :filename";
-		}
-		else {
-		 query = "INSERT INTO TBL_FILE(filename,filedata) Values (:filename,:filedata)";
-		}
-		
+		String query = "INSERT INTO TBL_FILE(filename,filedata) Values (:filename,:filedata)";
 		return namedParameterJdbcTemplate.update(query, in);
 
 	}
@@ -61,22 +58,39 @@ public class FileRepositoryImpl implements FileRepository {
 	
 	
 	@Override
+	public int deleteFile(String filename) {
+		MapSqlParameterSource in = new MapSqlParameterSource();
+		in.addValue("filename", filename);
+		String  query = "delete from TBL_FILE where filename = :filename ";
+		return namedParameterJdbcTemplate.update(query,in);
+	}
+
+	@Override
+	public int updateFile(String filename, byte[] filedata) {
+		
+		if(isFileExist(filename)>0) {
+		log.info("File exist so update");
+		MapSqlParameterSource in = new MapSqlParameterSource();
+		in.addValue("filename", filename);
+		in.addValue("filedata",new SqlLobValue(new ByteArrayInputStream(filedata),filedata.length,new DefaultLobHandler()),Types.BLOB);
+		String  query = "update TBL_FILE set filedata = :filedata   where filename = :filename";
+		return namedParameterJdbcTemplate.update(query, in);
+		}
+		else {
+			log.info("File does not exist so create new");
+			return saveFile(filename,filedata);
+			
+		}
+	}
+	
+	
 	public int isFileExist(String filename)  {
 		String sql = "select count(filename) from TBL_FILE where filename=:filename";
 		MapSqlParameterSource in = new MapSqlParameterSource();
 		in.addValue("filename", filename);
 		int count= namedParameterJdbcTemplate.queryForObject(sql,in,Integer.class);
-		
+		log.info("File Exists Response: "+ count);
 		return count;
-	}
-	
-	@Override
-	public int deleteFile(String filename) {
-		
-		MapSqlParameterSource in = new MapSqlParameterSource();
-		in.addValue("filename", filename);
-		return namedParameterJdbcTemplate.update("delete from TBL_FILE where filename = :filename ",
-				in);
 	}
 	
 	
